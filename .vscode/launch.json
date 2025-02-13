@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-DemoApplication<sql-select-parser-lite>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.parser.demo.DemoApplication",
+            "projectName": "sql-select-parser-lite",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
