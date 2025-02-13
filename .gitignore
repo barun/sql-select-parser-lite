@@ -1,0 +1,34 @@
+/*************  ✨ Codeium Command ⭐  *************/
+# Ignore all IDEs
+*.iml
+.idea
+.vscode
+#.classpath
+#.project
+#.settings
+# Ignore Eclipse metadata
+.metadata
+bin/
+tmp/
+target/
+
+# Ignore Spring Boot DevTools
+.springBootDevTools
+
+# Ignore logs and log backups
+*.log
+*.log.*
+
+# Ignore Maven and Gradle working directories
+.mvn
+.gradle
+
+# Ignore IntelliJ project files
+out
+gen
+# Ignore Visual Studio Code plugin settings
+.vscode/extensions.json
+.vscode/launch.json
+.vscode/settings.json
+.vscode/tasks.json
+/******  a2115b25-475f-420d-8cb4-2ffd6f6a5f87  *******/
