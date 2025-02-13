@@ -72,24 +72,30 @@ class SQLParser {
 
     private ConditionNode parseCondition(String field) {
         String operator = tokenizer.next();
-
-    if ("IN".equalsIgnoreCase(operator) || "NOT IN".equalsIgnoreCase(operator)) {
-        String valuesString = tokenizer.next().replace("(", "").replace(")", "").trim();
-        String[] values = valuesString.split(",");
         List<String> valueList = new ArrayList<>();
-        for (String value : values) {
-            valueList.add(value.trim().replace("'", "")); // Remove quotes
+    
+        if ("IN".equalsIgnoreCase(operator) || "NOT IN".equalsIgnoreCase(operator)) {
+            tokenizer.next(); // Consume the opening '('
+    
+            while (tokenizer.hasNext()) {
+                String token = tokenizer.next();
+                if (token.equals(")")) {
+                    break; // Stop when we reach the closing ')'
+                }
+                if (!token.equals(",")) {
+                    valueList.add(token.replaceAll("(^['\"(){}\\[]|['\"(){}\\]]$)", "")); // Remove surrounding quotes/braces
+                }
+            }
+            return new ConditionNode(field, operator, valueList);
+        } 
+        else if ("LIKE".equalsIgnoreCase(operator)) {
+            String value = tokenizer.next().replaceAll("(^['\"(){}\\[]|['\"(){}\\]]$)", "");
+            return new ConditionNode(field, operator, value);
         }
-        return new ConditionNode(field, operator, valueList); // ✅ Pass a List<String>
-    } 
-    else if ("LIKE".equalsIgnoreCase(operator)) {
-        String value = tokenizer.next().replace("'", ""); // Remove quotes
-        return new ConditionNode(field, operator, value);
+        else {
+            String value = tokenizer.next().replaceAll("(^['\"(){}\\[]|['\"(){}\\]]$)", "");
+            return new ConditionNode(field, operator, value);
+        }
     }
-    else {
-        // Handle simple conditions (e.g., age >= 30)
-        String value = tokenizer.next().replace("'", ""); // Remove quotes
-        return new ConditionNode(field, operator, value);
-    }
-    }
+    
 }
