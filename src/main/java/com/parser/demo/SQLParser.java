@@ -70,25 +70,26 @@ class SQLParser {
         return new ConditionNode(conditionStack.pop(), "AND");
     }
 
-    private ConditionNode parseCondition(String firstToken) {
-        String field = firstToken;
+    private ConditionNode parseCondition(String field) {
         String operator = tokenizer.next();
 
-        if ("IN".equalsIgnoreCase(operator) || "NOT".equalsIgnoreCase(operator)) {
-            if ("NOT".equalsIgnoreCase(operator)) {
-                tokenizer.next(); // Skip "IN"
-                operator = "NOT IN";
-            }
-            String valuesString = tokenizer.next().replace("(", "").replace(")", "").trim();
-            String[] values = valuesString.split(",");
-            List<String> valueList = new ArrayList<>();
-            for (String value : values) {
-                valueList.add(value.trim().replace("'", "")); // Remove quotes
-            }
-            return new ConditionNode(field, operator, valueList);
-        } else {
-            String value = tokenizer.next().replace("'", ""); // Remove quotes
-            return new ConditionNode(field, operator, value);
+    if ("IN".equalsIgnoreCase(operator) || "NOT IN".equalsIgnoreCase(operator)) {
+        String valuesString = tokenizer.next().replace("(", "").replace(")", "").trim();
+        String[] values = valuesString.split(",");
+        List<String> valueList = new ArrayList<>();
+        for (String value : values) {
+            valueList.add(value.trim().replace("'", "")); // Remove quotes
         }
+        return new ConditionNode(field, operator, valueList); // ✅ Pass a List<String>
+    } 
+    else if ("LIKE".equalsIgnoreCase(operator)) {
+        String value = tokenizer.next().replace("'", ""); // Remove quotes
+        return new ConditionNode(field, operator, value);
+    }
+    else {
+        // Handle simple conditions (e.g., age >= 30)
+        String value = tokenizer.next().replace("'", ""); // Remove quotes
+        return new ConditionNode(field, operator, value);
+    }
     }
 }
