@@ -18,9 +18,10 @@ class SQLTokenizer {
         List<String> result = new ArrayList<>();
         
         // Improved regex to properly tokenize SQL keywords, operators, and string literals
-        String regex = "\\b(SELECT|FROM|WHERE|AND|OR|NOT IN|IN|LIKE|BETWEEN)\\b" + // Keywords/operators
-                       "|\\*|,|\\(|\\)|>=|<=|!=|=|>|<" +                          // Operators
-                       "|'([^']*)'|\\w+";                                         // Strings & identifiers
+        String regex = "\\b(SELECT|FROM|WHERE|AND|OR|NOT IN|IN|LIKE|BETWEEN)\\b" +  // SQL Keywords
+        "|\\*|,|\\(|\\)|>=|<=|!=|=|>|<" +                           // Operators
+        "|'([^']*)'" +                                              // String literals
+        "|[a-zA-Z0-9_]+(?:\\.[a-zA-Z0-9_]+)?"; 
 
         Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(sql);
