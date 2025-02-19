@@ -1,52 +1,28 @@
 package com.parser.demo;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 class SQLParser {
-    private SQLTokenizer tokenizer;
+    private Tokenizer tokenizer;
 
-    public SQLParser(String sql) {
-        this.tokenizer = new SQLTokenizer(sql);
+    public SQLParser(String input) {
+        this.tokenizer = new Tokenizer(input);
     }
 
-    public SelectStatement parse() throws Exception {
-        if (!"SELECT".equalsIgnoreCase(tokenizer.next())) {
-            throw new Exception("Expected SELECT keyword");
-        }
-
-        List<String> columns = parseColumns();
-
-        if (!"FROM".equalsIgnoreCase(tokenizer.next())) {
-            throw new Exception("Expected FROM keyword");
-        }
-
-        String table = tokenizer.next();
-        ConditionNode whereCondition = null;
-
-        if (tokenizer.hasNext() && "WHERE".equalsIgnoreCase(tokenizer.next())) {
-            whereCondition = parseWhereClause();
-        }
-
-        return new SelectStatement(columns, table, whereCondition);
-    }
-
-    private List<String> parseColumns() throws Exception {
-        List<String> columns = new ArrayList<>();
+    public ConditionNode parse() {
+        // Skip everything before WHERE
         while (tokenizer.hasNext()) {
-            String column = tokenizer.next();
-            if (",".equals(column)) continue;
-            if ("FROM".equalsIgnoreCase(column)) {
-                tokenizer.index--;
-                break;
+            String token = tokenizer.next();
+            if (token.equalsIgnoreCase("WHERE")) {
+                break; // Stop at WHERE
             }
-            columns.add(column);
         }
-        return columns;
+
+        // Parse conditions from WHERE clause
+        return parseConditions();
     }
 
-    private ConditionNode parseWhereClause() {
+    private ConditionNode parseConditions() {
         Stack<List<ConditionNode>> conditionStack = new Stack<>();
         Stack<String> operatorStack = new Stack<>();
         conditionStack.push(new ArrayList<>());
@@ -54,48 +30,51 @@ class SQLParser {
         while (tokenizer.hasNext()) {
             String token = tokenizer.next();
 
-            if ("(".equals(token)) {
+            if (token.equals("(")) {
+                // Start a new nested condition block
                 conditionStack.push(new ArrayList<>());
-            } else if (")".equals(token)) {
+            } 
+            else if (token.equals(")")) {
+                // Close nested block
                 List<ConditionNode> nestedConditions = conditionStack.pop();
-                String combinator = operatorStack.isEmpty() ? "AND" : operatorStack.pop();
-                conditionStack.peek().add(new ConditionNode(nestedConditions, combinator));
-            } else if ("AND".equalsIgnoreCase(token) || "OR".equalsIgnoreCase(token)) {
-                operatorStack.push(token.toUpperCase());
-            } else {
-                conditionStack.peek().add(parseCondition(token));
+                if (!conditionStack.isEmpty()) {
+                    String combinator = operatorStack.isEmpty() ? "and" : operatorStack.pop();
+                    conditionStack.peek().add(new ConditionNode(combinator, nestedConditions));
+                }
+            } 
+            else if (token.equalsIgnoreCase("AND") || token.equalsIgnoreCase("OR")) {
+                operatorStack.push(token.toLowerCase());
+            } 
+            else {
+                // Process field, operator, and values
+                String field = token;
+                String operator = tokenizer.next();
+
+                if (operator.equalsIgnoreCase("IN") || operator.equalsIgnoreCase("NOT IN")) {
+                    tokenizer.next(); // Consume "("
+                    List<String> values = new ArrayList<>();
+                    while (tokenizer.hasNext()) {
+                        String valueToken = tokenizer.next();
+                        if (valueToken.equals(")")) break; // Stop at closing ")"
+                        if (!valueToken.equals(",")) {
+                            values.add(valueToken.replaceAll("(^['\"]|['\"]$)", ""));
+                        }
+                    }
+                    conditionStack.peek().add(new ConditionNode(field, operator, values));
+                } else {
+                    // Regular condition (e.g. field = value)
+                    String value = tokenizer.next().replaceAll("(^['\"]|['\"]$)", "");
+                    conditionStack.peek().add(new ConditionNode(field, operator, value));
+                }
             }
         }
 
-        return new ConditionNode(conditionStack.pop(), "AND");
+        return new ConditionNode("and", conditionStack.pop());
     }
-
-    private ConditionNode parseCondition(String field) {
-        String operator = tokenizer.next();
-        List<String> valueList = new ArrayList<>();
-    
-        if ("IN".equalsIgnoreCase(operator) || "NOT IN".equalsIgnoreCase(operator)) {
-            tokenizer.next(); // Consume the opening '('
-    
-            while (tokenizer.hasNext()) {
-                String token = tokenizer.next();
-                if (token.equals(")")) {
-                    break; // Stop when we reach the closing ')'
-                }
-                if (!token.equals(",")) {
-                    valueList.add(token.replaceAll("(^['\"(){}\\[]|['\"(){}\\]]$)", "")); // Remove surrounding quotes/braces
-                }
-            }
-            return new ConditionNode(field, operator, valueList);
-        } 
-        else if ("LIKE".equalsIgnoreCase(operator)) {
-            String value = tokenizer.next().replaceAll("(^['\"(){}\\[]|['\"(){}\\]]$)", "");
-            return new ConditionNode(field, operator, value);
-        }
-        else {
-            String value = tokenizer.next().replaceAll("(^['\"(){}\\[]|['\"(){}\\]]$)", "");
-            return new ConditionNode(field, operator, value);
-        }
-    }
-    
 }
+
+
+
+
+
+

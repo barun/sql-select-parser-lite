@@ -1,34 +1,69 @@
 package com.parser.demo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 class ConditionNode {
-    String field;
-    String operator;
-    String value;
-    List<ConditionNode> children;
-    String combinator;
+    private String id;
+    private String combinator;
+    private List<ConditionNode> rules = new ArrayList<>();
+    private String field;
+    private String operator;
+    private Object value;
 
-    public ConditionNode(String field, String operator, String value) {
+    // Constructor for field conditions
+    public ConditionNode(String field, String operator, Object value) {
+        this.id = UUID.randomUUID().toString();
         this.field = field;
         this.operator = operator;
         this.value = value;
     }
 
-    public ConditionNode(List<ConditionNode> children, String combinator) {
-        this.children = children;
+    // Constructor for combinators (AND/OR groups)
+    public ConditionNode(String combinator, List<ConditionNode> rules) {
+        this.id = UUID.randomUUID().toString();
         this.combinator = combinator;
+        this.rules = rules;
     }
 
-    public ConditionNode(String field2, String operator2, List<String> valueList) {
-        this.field = field;
-        this.operator = operator;
-        this.value = valueList.stream().collect(Collectors.joining(",")); 
+    public String toJson() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
     }
 
-    public boolean isGroup() {
-        return children != null;
+// Explicitly define getters for JSON serialization
+    @JsonProperty("id")
+    public String getId() {
+        return id;
     }
+
+    @JsonProperty("combinator")
+    public String getCombinator() {
+        return combinator;
+    }
+
+    @JsonProperty("rules")
+    public List<ConditionNode> getRules() {
+        return rules;
+    }
+
+    @JsonProperty("field")
+    public String getField() {
+        return field;
+    }
+
+    @JsonProperty("operator")
+    public String getOperator() {
+        return operator;
+    }
+
+    @JsonProperty("value")
+    public Object getValue() {
+        return value;
+    }
+
 }
 

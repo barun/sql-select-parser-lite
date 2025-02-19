@@ -1,9 +1,11 @@
 package com.parser.demo;
 
+import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-class QueryBuilderTransformer {
+/*class QueryBuilderTransformer {
     public static JSONObject toQueryBuilderModel(ConditionNode condition) {
         JSONObject jsonObject = new JSONObject();
         
@@ -20,15 +22,16 @@ class QueryBuilderTransformer {
             jsonObject.put("field", condition.field);
             jsonObject.put("operator", condition.operator.toLowerCase());
 
-            if (true /*condition.value instanceof List*/) {
-                JSONArray valuesArray = new JSONArray( condition.value);
+            if (condition.value instanceof List val) {
+                JSONArray valuesArray = new JSONArray(val);
+                
                 jsonObject.put("value", valuesArray);
-            } /* else {
+            }  else {
                 jsonObject.put("value", condition.value);
-            } */
+            } 
         }
 
         return jsonObject;
     }
-}
+}*/
 

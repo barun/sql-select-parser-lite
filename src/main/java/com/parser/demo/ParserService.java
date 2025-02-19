@@ -6,13 +6,14 @@ public class ParserService {
 
     public String parse(String sql) throws Exception {
         try {
-            
+            /* 
             SQLParser parser = new SQLParser(sql);
             SelectStatement statement = parser.parse();
 
             JSONObject queryBuilderJson = QueryBuilderTransformer.toQueryBuilderModel(statement.whereCondition);
             System.out.println(queryBuilderJson.toString(2)); // Pretty print JSON
-            return queryBuilderJson.toString(2);
+            return queryBuilderJson.toString(2);*/
+            return null;
         } catch (Exception e) {
             System.err.println("Parsing error: " + e.getMessage());
             return null;
