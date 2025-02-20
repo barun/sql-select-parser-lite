@@ -161,6 +161,18 @@ public class ASQBaseListener implements ASQListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterNotContainsPredicate(ASQParser.NotContainsPredicateContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNotContainsPredicate(ASQParser.NotContainsPredicateContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterInPredicate(ASQParser.InPredicateContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -192,6 +204,18 @@ public class ASQBaseListener implements ASQListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitContains_clause(ASQParser.Contains_clauseContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterNot_contains_clause(ASQParser.Not_contains_clauseContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNot_contains_clause(ASQParser.Not_contains_clauseContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

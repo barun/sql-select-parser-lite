@@ -88,6 +88,13 @@ public interface ASQVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitContainsPredicate(ASQParser.ContainsPredicateContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code NotContainsPredicate}
+	 * labeled alternative in {@link ASQParser#predicate}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNotContainsPredicate(ASQParser.NotContainsPredicateContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code InPredicate}
 	 * labeled alternative in {@link ASQParser#predicate}.
 	 * @param ctx the parse tree
@@ -107,6 +114,12 @@ public interface ASQVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitContains_clause(ASQParser.Contains_clauseContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link ASQParser#not_contains_clause}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNot_contains_clause(ASQParser.Not_contains_clauseContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link ASQParser#in_clause}.
 	 * @param ctx the parse tree

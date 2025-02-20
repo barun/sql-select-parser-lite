@@ -138,6 +138,18 @@ public interface ASQListener extends ParseTreeListener {
 	 */
 	void exitContainsPredicate(ASQParser.ContainsPredicateContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code NotContainsPredicate}
+	 * labeled alternative in {@link ASQParser#predicate}.
+	 * @param ctx the parse tree
+	 */
+	void enterNotContainsPredicate(ASQParser.NotContainsPredicateContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code NotContainsPredicate}
+	 * labeled alternative in {@link ASQParser#predicate}.
+	 * @param ctx the parse tree
+	 */
+	void exitNotContainsPredicate(ASQParser.NotContainsPredicateContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code InPredicate}
 	 * labeled alternative in {@link ASQParser#predicate}.
 	 * @param ctx the parse tree
@@ -171,6 +183,16 @@ public interface ASQListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitContains_clause(ASQParser.Contains_clauseContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ASQParser#not_contains_clause}.
+	 * @param ctx the parse tree
+	 */
+	void enterNot_contains_clause(ASQParser.Not_contains_clauseContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ASQParser#not_contains_clause}.
+	 * @param ctx the parse tree
+	 */
+	void exitNot_contains_clause(ASQParser.Not_contains_clauseContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ASQParser#in_clause}.
 	 * @param ctx the parse tree

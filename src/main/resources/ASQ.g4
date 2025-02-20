@@ -50,6 +50,7 @@ expression
 predicate
     : IDENTIFIER op literal              #ComparisonPredicate
     | IDENTIFIER contains_clause         #ContainsPredicate
+    | IDENTIFIER not_contains_clause     #NotContainsPredicate
     | IDENTIFIER in_clause               #InPredicate
     | IDENTIFIER not_in_clause           #NotInPredicate
     ;
@@ -57,6 +58,11 @@ predicate
 contains_clause
     : CONTAINS '(' literal (',' literal)* ')'
     ;
+
+not_contains_clause
+    : NOT CONTAINS '(' literal (',' literal)* ')'
+    ;
+
 
 // Rule for IN clause with a list of literals
 in_clause
@@ -89,6 +95,8 @@ standard_op
     | '>'
     | '<='
     | '>='
+    | 'LIKE'
+    | 'NOT LIKE'
     ;
 
 // Custom operators for extended functionality (example: %% and @@)
@@ -112,6 +120,7 @@ IN     : [Ii][Nn];
 NOT      : [Nn][Oo][Tt];    // Added NOT keyword
 AND    : [Aa][Nn][Dd];
 OR     : [Oo][Rr];
+
 
 
 // Identifier: letter or underscore followed by letters, digits, or underscores

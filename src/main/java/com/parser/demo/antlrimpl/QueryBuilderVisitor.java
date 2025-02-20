@@ -170,4 +170,57 @@ public class QueryBuilderVisitor extends ASQBaseVisitor<Object> {
         rule.setValue(values);
         return rule;
     }
+
+    @Override
+    public Object visitNotContainsPredicate(ASQParser.NotContainsPredicateContext ctx) {
+        QueryRule rule = new QueryRule();
+        rule.setField(ctx.IDENTIFIER().getText());
+        rule.setOperator("not contains");
+
+        List<Object> values = new ArrayList<>();
+        // Extract all literals from the not_contains_clause
+        List<ASQParser.LiteralContext> literalContexts = ctx.not_contains_clause().literal();
+        for (ASQParser.LiteralContext litCtx : literalContexts) {
+            String literalText = litCtx.getText();
+            if (literalText.startsWith("'") && literalText.endsWith("'")) {
+                literalText = literalText.substring(1, literalText.length() - 1);
+            }
+            values.add(literalText);
+        }
+        rule.setValue(values);
+        return rule;
+    }
+
+  /*  @Override
+    public Object visitLikePredicate(ASQParser.LikePredicateContext ctx) {
+        QueryRule rule = new QueryRule();
+        rule.setField(ctx.IDENTIFIER().getText());
+        rule.setOperator("like");
+
+        String literalText = ctx.getChild(2).getText();
+        if (literalText.startsWith("'") && literalText.endsWith("'")) {
+            literalText = literalText.substring(1, literalText.length() - 1);
+        }
+        rule.setValue(literalText);
+        return rule;
+    }
+
+    @Override
+    public Object visitNotLikePredicate(ASQParser.NotLikePredicateContext ctx) {
+        QueryRule rule = new QueryRule();
+        rule.setField(ctx.IDENTIFIER().getText());
+        rule.setOperator("not like");
+
+        String literalText = ctx.getChild(3).getText();
+        if (literalText.startsWith("'") && literalText.endsWith("'")) {
+            literalText = literalText.substring(1, literalText.length() - 1);
+        }
+        rule.setValue(literalText);
+        return rule;
+    }
+
+   */
+
+
+
 }

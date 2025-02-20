@@ -32,7 +32,7 @@ public class SQLParserDemo {
 
             */
 
-            String sql = """
+        /*    String sql = """
                     SELECT col1, col2
                     FROM myTable
                     WHERE col1 IN ('value1', 'value2', 123)
@@ -40,6 +40,33 @@ public class SQLParserDemo {
                     AND (col3 = 'CDE' OR col4 CONTAINS ('CDE', 'efg'))
                     """;
 
+         */
+           /* String sql = """
+                    SELECT col1, col2
+                    FROM myTable
+                    WHERE col1 IN ('value1', 'value2', 123)
+                    AND col2 = 'abc'
+                    AND (col3 = 'CDE' OR col4  NOT CONTAINS ('CDE', 'efg'))
+                    """;
+
+            */
+           /* String sql = """
+                    SELECT col1, col2
+                    FROM myTable
+                    WHERE col1 IN ('value1', 'value2', 123)
+                    AND col2 = 'abc'
+                    AND (col3 = 'CDE' OR col4  LIKE '%sdfdasfd')
+                    """;
+
+            */
+
+            String sql = """
+                    SELECT col1, col2
+                    FROM myTable
+                    WHERE col1 IN ('value1', 'value2', 123)
+                    AND col2 = 'abc'
+                    AND (col3 = 'CDE' OR col4  NOT LIKE '%sdfdasfd')
+                    """;
 
           /*  String sql = """
                     SELECT col1, col2
