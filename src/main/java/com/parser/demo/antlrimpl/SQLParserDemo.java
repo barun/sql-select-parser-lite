@@ -10,7 +10,9 @@ public class SQLParserDemo {
     public static void main(String[] args) {
         try {
             // Example SQL query supporting both comparison and IN predicates.
-            String sql = "SELECT sor.myTable.col1, sor.myTable.col2 FROM sor.myTable WHERE sor.myTable.col1 IN ('value1', 'value2', 123) AND sor.myTable.col2 = 'abc'";
+          // String sql = "SELECT sor.myTable.col1, sor.myTable.col2 FROM sor.myTable WHERE sor.myTable.col1 IN ('value1', 'value2', 123) AND sor.myTable.col2 = 'abc'";
+          // String sql = "SELECT sor.myTable.col1  FROM sor.myTable WHERE sor.myTable.col1 IN ('value1', 'value2', 123) ";
+           // String sql = "SELECT sor.myTable.col1  FROM sor.myTable WHERE sor.myTable.col1 = 123";
           /*  String sql = """
                     SELECT col1, col2
                     FROM myTable
@@ -30,7 +32,7 @@ public class SQLParserDemo {
 
             */
 
-         /*   String sql = """
+            String sql = """
                     SELECT col1, col2
                     FROM myTable
                     WHERE col1 IN ('value1', 'value2', 123)
@@ -38,7 +40,7 @@ public class SQLParserDemo {
                     AND (col3 = 'CDE' OR col4 CONTAINS ('CDE', 'efg'))
                     """;
 
-          */
+
           /*  String sql = """
                     SELECT col1, col2
                     FROM myTable

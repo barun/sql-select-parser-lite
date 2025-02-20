@@ -41,7 +41,15 @@ public class QueryBuilderVisitor extends ASQBaseVisitor<Object> {
         // Process the WHERE clause condition if present.
         if (ctx.condition() != null) {
             Object condition = visit(ctx.condition());
-            query.setCondition(condition);
+            if(condition instanceof QueryRule rule){
+                var qg = new QueryGroup();
+                qg.setCombinator("and");
+                qg.setRules(List.of(rule));
+                query.setCondition(qg);
+            }else{
+                query.setCondition(condition);
+            }
+
         }
 
         return query;
